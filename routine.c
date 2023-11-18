@@ -6,23 +6,23 @@
 /*   By: ndesprez <ndesprez@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 15:51:23 by ndesprez          #+#    #+#             */
-/*   Updated: 2023/10/11 15:51:23 by ndesprez         ###   ########.fr       */
+/*   Updated: 2023/11/18 16:11:34 by ndesprez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static bool	t_routine_seq(t_thread *thread)
+static int	t_routine_seq(t_thread *thread)
 {
-	if (ft_check_death(thread) == true)
-		return (true);
+	if (check_death(thread))
+		return (1);
 	ft_usleep(thread->info->to_sleep * 999);
-	if (ft_check_death(thread) == true)
-		return (true);
+	if (check_death(thread))
+		return (1);
 	ft_print_log(thread, is_thinking);
-	if (ft_check_death(thread) == true)
-		return (true);
-	return (false);
+	if (check_death(thread))
+		return (1);
+	return (0);
 }
 
 static void	eating_routine(t_thread *thread, size_t id, t_main *info)
@@ -38,6 +38,7 @@ static void	eating_routine(t_thread *thread, size_t id, t_main *info)
 				thread->time_start = (get_time() - info->true_time);
 			pthread_mutex_unlock(&thread->m_time_start);
 			ft_print_log(thread, is_eating);
+			ft_usleep(info->to_eat * 1000);
 		}
 	}
 	pthread_mutex_unlock(&(info->threads[thread->id]->m_fork));
@@ -45,7 +46,7 @@ static void	eating_routine(t_thread *thread, size_t id, t_main *info)
 	pthread_mutex_lock(&thread->m_meal_count);
 	thread->meal_count++;
 	pthread_mutex_unlock(&thread->m_meal_count);
-	ft_check_time_to_eat(thread);
+	check_time_to_eat(thread);
 }
 
 void	*t_routine(void *arg)
@@ -58,23 +59,23 @@ void	*t_routine(void *arg)
 		ft_print_log(current, is_thinking);
 		ft_usleep(current->info->to_eat * 1000);
 	}
-	while (ft_check_death(current) == false)
+	while (!check_death(current))
 	{
-		if (ft_check_death(current) == true)
+		if (check_death(current))
 			break ;
 		eating_routine(current, current->id, current->info);
-		if (ft_check_death(current) == true)
+		if (check_death(current))
 			break ;
 		ft_print_log(current, is_sleeping);
-		if (t_routine_seq(current) == true)
+		if (t_routine_seq(current))
 			break ;
-		if (ft_check_death(current) == true)
+		if (check_death(current))
 			break ;
 	}
 	return (0);
 }
 
-static bool	w_routine_sat(t_main *info, size_t count, size_t i)
+static int	w_routine_sat(t_main *info, size_t count, size_t i)
 {
 	static size_t	count_bis = 0;
 
@@ -86,13 +87,13 @@ static bool	w_routine_sat(t_main *info, size_t count, size_t i)
 	if ((i + 1) == info->nb_philo && count_bis == info->nb_philo)
 	{
 		pthread_mutex_lock(&info->m_satiate);
-		info->satiate = true;
+		info->satiate = 1;
 		pthread_mutex_unlock(&info->m_satiate);
 		pthread_mutex_unlock(&info->threads[i]->m_meal_count);
-		return (true);
+		return (1);
 	}
 	pthread_mutex_unlock(&info->threads[i]->m_meal_count);
-	return (false);
+	return (0);
 }
 
 void	*w_routine(void *arg)
@@ -117,7 +118,7 @@ void	*w_routine(void *arg)
 				exit (0);
 			}
 			pthread_mutex_unlock(&info->threads[i]->m_time_start);
-			if (w_routine_sat(info, count, i) == true)
+			if (w_routine_sat(info, count, i))
 				exit (0);
 			count++;
 			i++;

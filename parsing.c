@@ -6,9 +6,11 @@
 /*   By: ndesprez <ndesprez@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 17:34:37 by ndesprez          #+#    #+#             */
-/*   Updated: 2023/10/08 17:34:37 by ndesprez         ###   ########.fr       */
+/*   Updated: 2023/11/18 15:33:51 by ndesprez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "philo.h"
 
 static int	check_len(char *num)
 {
@@ -35,7 +37,7 @@ static int	check_len(char *num)
 	return (j);
 }
 
-static bool	check_int(int argc, char **argv)
+static int	check_int(int argc, char **argv)
 {
 	int	i;
 
@@ -44,13 +46,13 @@ static bool	check_int(int argc, char **argv)
 	{
 		if (check_len(argv[i]) > 10 || check_len(argv[i]) == -1 || \
 		(long)ft_atol(argv[i]) < INT_MIN || (long)ft_atol(argv[i]) > INT_MAX)
-			return (false);
+			return (0);
 		i++;
 	}
-	return (true);
+	return (1);
 }
 
-static bool	check_negative(int argc, char **argv)
+static int	check_negative(int argc, char **argv)
 {
 	int	i;
 
@@ -58,29 +60,29 @@ static bool	check_negative(int argc, char **argv)
 	while (i < argc)
 	{
 		if (ft_atoi(argv[i]) < 0)
-			return (false);
+			return (0);
 		i++;
 	}
-	return (true);
+	return (1);
 }
 
-bool	parse(t_main *ph, int ac, char **av)
+int	parse(t_main *ph, int ac, char **av)
 {
-	if (check_int(ac, av) == false)
+	if (!check_int(ac, av))
 	{
 		ft_putstr_fd("Invalid data type\n", 2);
-		return (false);
+		return (0);
 	}
-	if (check_negative(ac, av) == false)
+	if (!check_negative(ac, av))
 	{
 		ft_putstr_fd("Negative data\n", 2);
-		return (false);
+		return (0);
 	}
-	if ((ft_atoi(av[1]) == 0 || ft_atoi(av[2]) == 0 \
-	|| ft_atoi(av[3]) == 0 || ft_atoi(av[4]) == 0) || (ac == 6 && ft_atoi(av[5]) == 0))
+	if ((ft_atoi(av[1]) == 0 || ft_atoi(av[2]) == 0 || ft_atoi(av[3]) == 0
+			|| ft_atoi(av[4]) == 0) || (ac == 6 && ft_atoi(av[5]) == 0))
 	{
 		ft_putstr_fd("Null data\n", 2);
-		return (false);
+		return (0);
 	}
 	ph->nb_philo = ft_atoi(av[1]);
 	ph->to_die = ft_atoi(av[2]);
@@ -90,5 +92,5 @@ bool	parse(t_main *ph, int ac, char **av)
 		ph->max_meal = ft_atoi(av[5]);
 	else
 		ph->max_meal = 0;
-	return (true);
+	return (1);
 }

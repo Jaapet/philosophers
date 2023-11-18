@@ -6,7 +6,7 @@
 /*   By: ndesprez <ndesprez@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 18:00:59 by ndesprez          #+#    #+#             */
-/*   Updated: 2023/10/08 18:00:59 by ndesprez         ###   ########.fr       */
+/*   Updated: 2023/11/18 15:30:50 by ndesprez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,23 +39,23 @@ void	check_time_to_eat(t_thread *thread)
 	ft_usleep((thread->info->to_eat * 1000) - (thread->time_to_eat * 1000));
 }
 
-bool	check_death(t_thread *thread)
+int	check_death(t_thread *thread)
 {
 	if (pthread_mutex_lock(&thread->info->m_dead) == 0)
 	{
-		if (thread->info->dead == true)
+		if (thread->info->dead)
 		{
 			pthread_mutex_unlock(&thread->info->m_dead);
-			return (true);
+			return (1);
 		}
 		pthread_mutex_unlock(&thread->info->m_dead);
 	}
 	pthread_mutex_lock(&thread->info->m_satiate);
-	if (thread->info->satiate == true)
+	if (thread->info->satiate)
 	{
 		pthread_mutex_unlock(&thread->info->m_satiate);
-		return (true);
+		return (1);
 	}
 	pthread_mutex_unlock(&thread->info->m_satiate);
-	return (false);
+	return (0);
 }

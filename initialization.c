@@ -6,7 +6,7 @@
 /*   By: ndesprez <ndesprez@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 15:40:49 by ndesprez          #+#    #+#             */
-/*   Updated: 2023/10/11 15:40:49 by ndesprez         ###   ########.fr       */
+/*   Updated: 2023/11/18 15:43:59 by ndesprez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	init_watcher(t_main *ph)
 {
-	if (pthread_create(&ph->watcher_id, NULL, ft_routine_watcher, ph))
+	if (pthread_create(&ph->watcher_id, NULL, w_routine, ph))
 		return (ft_putstr_fd("Thread creation error", 2), exit(1));
 }
 
@@ -37,10 +37,10 @@ void	ft_init(t_main *ph)
 {
 	size_t	i;
 
-	ph->threads = ft_calloc(ph->nb_philo + 1, sizeof(t_thread)); // caloc fumeux
+	ph->threads = ft_calloc(ph->nb_philo + 1, sizeof(t_thread *));
 	pthread_mutex_init(&(ph->m_dead), NULL);
 	pthread_mutex_init(&(ph->m_satiate), NULL);
-	pthread_mutex_init(&(ph->m_log_print), NULL);
+	pthread_mutex_init(&(ph->m_print), NULL);
 	i = 0;
 	while (i < ph->nb_philo)
 	{
@@ -50,7 +50,8 @@ void	ft_init(t_main *ph)
 	i = 0;
 	while (i < ph->nb_philo)
 	{
-		if (pthread_create(&ph->threads[i]->thread_id, NULL, t_routine, ph->threads[i]))
+		if (pthread_create(&ph->threads[i]->thread_id,
+				NULL, t_routine, ph->threads[i]))
 			return (ft_putstr_fd("Thread creation error", 2), exit(1));
 		i++;
 	}

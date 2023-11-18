@@ -6,7 +6,7 @@
 /*   By: ndesprez <ndesprez@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 17:15:32 by ndesprez          #+#    #+#             */
-/*   Updated: 2023/10/08 17:15:32 by ndesprez         ###   ########.fr       */
+/*   Updated: 2023/11/18 15:52:41 by ndesprez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <stdbool.h>
 # include <pthread.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -56,12 +55,12 @@ typedef struct s_main
 	time_t			to_sleep;
 	time_t			true_time;
 	time_t			cur_time;
-	bool			dead;
+	int				dead;
 	pthread_mutex_t	m_dead;
-	bool			satiate;
+	int				satiate;
 	pthread_mutex_t	m_satiate;
 	t_thread		**threads;
-	pthread_t		whatcher_id;
+	pthread_t		watcher_id;
 	pthread_mutex_t	m_print;
 }	t_main;
 
@@ -72,5 +71,24 @@ int		ft_isdigit(int c);
 int		ft_atoi(const char *nptr);
 long	ft_atol(const char *nptr);
 void	*ft_calloc(size_t count, size_t size);
+
+/*----PARSING----*/
+int		parse(t_main *ph, int ac, char **av);
+
+/*----ROUTINE----*/
+void	*t_routine(void *arg);
+void	*w_routine(void *arg);
+
+/*----TIME----*/
+time_t	get_time(void);
+void	ft_usleep(time_t us);
+void	check_time_to_eat(t_thread *thread);
+int		check_death(t_thread *thread);
+
+/*----INIT----*/
+void	ft_init(t_main *ph);
+
+/*----LOGS----*/
+void	ft_print_log(t_thread *thread, enum e_status status);
 
 #endif
