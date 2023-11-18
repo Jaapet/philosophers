@@ -6,7 +6,7 @@
 /*   By: ndesprez <ndesprez@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 15:40:49 by ndesprez          #+#    #+#             */
-/*   Updated: 2023/11/18 15:43:59 by ndesprez         ###   ########.fr       */
+/*   Updated: 2023/11/18 16:50:22 by ndesprez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,19 @@ static void	init_thread(t_main *ph, size_t thread_index)
 	pthread_mutex_init(&(current->m_meal_count), NULL);
 }
 
+static void	init_join(t_main *ph)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < ph->nb_philo)
+	{
+		pthread_join(ph->threads[i]->thread_id, NULL);
+		i++;
+	}
+	pthread_join(ph->watcher_id, NULL);
+}
+
 void	ft_init(t_main *ph)
 {
 	size_t	i;
@@ -56,11 +69,5 @@ void	ft_init(t_main *ph)
 		i++;
 	}
 	init_watcher(ph);
-	i = 0;
-	while (i < ph->nb_philo)
-	{
-		pthread_join(ph->threads[i]->thread_id, NULL);
-		i++;
-	}
-	pthread_join(ph->watcher_id, NULL);
+	init_join(ph);
 }

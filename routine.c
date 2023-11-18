@@ -6,7 +6,7 @@
 /*   By: ndesprez <ndesprez@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 15:51:23 by ndesprez          #+#    #+#             */
-/*   Updated: 2023/11/18 16:11:34 by ndesprez         ###   ########.fr       */
+/*   Updated: 2023/11/18 16:59:05 by ndesprez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,11 @@ void	*w_routine(void *arg)
 {
 	t_main	*info;
 	size_t	i;
-	size_t	count;
 
 	info = (t_main *)arg;
 	while (1)
 	{
 		i = 0;
-		count = 0;
 		while (i < info->nb_philo)
 		{
 			info->cur_time = (get_time() - info->true_time);
@@ -118,9 +116,8 @@ void	*w_routine(void *arg)
 				exit (0);
 			}
 			pthread_mutex_unlock(&info->threads[i]->m_time_start);
-			if (w_routine_sat(info, count, i))
+			if (w_routine_sat(info, i, i))
 				exit (0);
-			count++;
 			i++;
 		}
 	}
