@@ -6,7 +6,7 @@
 /*   By: ndesprez <ndesprez@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:37:13 by ndesprez          #+#    #+#             */
-/*   Updated: 2023/11/18 15:56:07 by ndesprez         ###   ########.fr       */
+/*   Updated: 2023/11/19 16:41:41 by ndesprez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static time_t	ft_ts(t_thread *thread)
 
 void	ft_print_log(t_thread *thread, enum e_status status)
 {
-	pthread_mutex_lock(&thread->info->m_print);
 	if (check_death(thread))
 		return ;
 	if (status == fork_taken)
@@ -37,5 +36,4 @@ void	ft_print_log(t_thread *thread, enum e_status status)
 		pthread_mutex_unlock(&thread->info->m_dead);
 		printf("%-9lu %-9lu died\n", ft_ts(thread), thread->id + 1);
 	}
-	pthread_mutex_unlock(&thread->info->m_print);
 }

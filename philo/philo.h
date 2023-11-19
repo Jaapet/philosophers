@@ -6,7 +6,7 @@
 /*   By: ndesprez <ndesprez@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 17:15:32 by ndesprez          #+#    #+#             */
-/*   Updated: 2023/11/18 15:52:41 by ndesprez         ###   ########.fr       */
+/*   Updated: 2023/11/19 16:41:57 by ndesprez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ typedef struct s_main
 	pthread_mutex_t	m_satiate;
 	t_thread		**threads;
 	pthread_t		watcher_id;
-	pthread_mutex_t	m_print;
 }	t_main;
 
 /*----UTILS----*/

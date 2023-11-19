@@ -6,7 +6,7 @@
 /*   By: ndesprez <ndesprez@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 15:40:49 by ndesprez          #+#    #+#             */
-/*   Updated: 2023/11/18 16:50:22 by ndesprez         ###   ########.fr       */
+/*   Updated: 2023/11/19 16:42:27 by ndesprez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	init_thread(t_main *ph, size_t thread_index)
 
 	current = ft_calloc(1, sizeof(t_thread));
 	if (current == NULL)
-		exit(1);
+		return ;
 	ph->threads[thread_index] = current;
 	current->info = ph;
 	current->id = thread_index;
@@ -53,7 +53,6 @@ void	ft_init(t_main *ph)
 	ph->threads = ft_calloc(ph->nb_philo + 1, sizeof(t_thread *));
 	pthread_mutex_init(&(ph->m_dead), NULL);
 	pthread_mutex_init(&(ph->m_satiate), NULL);
-	pthread_mutex_init(&(ph->m_print), NULL);
 	i = 0;
 	while (i < ph->nb_philo)
 	{
@@ -65,7 +64,7 @@ void	ft_init(t_main *ph)
 	{
 		if (pthread_create(&ph->threads[i]->thread_id,
 				NULL, t_routine, ph->threads[i]))
-			return (ft_putstr_fd("Thread creation error", 2), exit(1));
+			return (ft_putstr_fd("Thread creation error", 2));
 		i++;
 	}
 	init_watcher(ph);

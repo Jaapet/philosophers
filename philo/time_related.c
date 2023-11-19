@@ -6,7 +6,7 @@
 /*   By: ndesprez <ndesprez@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 18:00:59 by ndesprez          #+#    #+#             */
-/*   Updated: 2023/11/18 15:30:50 by ndesprez         ###   ########.fr       */
+/*   Updated: 2023/11/19 16:14:48 by ndesprez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	check_time_to_eat(t_thread *thread)
 {
 	thread->time_to_eat = (get_time() - thread->info->true_time) \
 		- thread->time_start;
-	ft_usleep((thread->info->to_eat * 1000) - (thread->time_to_eat * 1000));
 }
 
 int	check_death(t_thread *thread)

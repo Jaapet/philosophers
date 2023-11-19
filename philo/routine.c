@@ -6,7 +6,7 @@
 /*   By: ndesprez <ndesprez@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 15:51:23 by ndesprez          #+#    #+#             */
-/*   Updated: 2023/11/18 16:59:05 by ndesprez         ###   ########.fr       */
+/*   Updated: 2023/11/19 16:20:02 by ndesprez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,11 @@ void	*w_routine(void *arg)
 			{
 				pthread_mutex_unlock(&info->threads[i]->m_time_start);
 				ft_print_log(info->threads[i], dead);
-				exit (0);
+				return (0);
 			}
 			pthread_mutex_unlock(&info->threads[i]->m_time_start);
 			if (w_routine_sat(info, i, i))
-				exit (0);
+				return (0);
 			i++;
 		}
 	}
