@@ -6,7 +6,7 @@
 /*   By: ndesprez <ndesprez@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 17:22:35 by ndesprez          #+#    #+#             */
-/*   Updated: 2023/11/18 15:23:51 by ndesprez         ###   ########.fr       */
+/*   Updated: 2023/11/19 18:26:39 by ndesprez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ int	main(int ac, char **av)
 	if (!parse(&ph, ac, av))
 		return (1);
 	ph.true_time = get_time();
-	ft_init(&ph);
+	if (ph.nb_philo == 1)
+		printf("0         1         has taken a fork\n \
+		%-9li 1         died\n", ph.to_die);
+	else
+		ft_init(&ph);
 	return (0);
 }
